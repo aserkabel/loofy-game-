@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+  workflow_dispatch: {}
 
 jobs:
   buildForWindows:
@@ -14,15 +15,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create Dummy Scene
-        run: |
-          mkdir -p Assets/Scenes
-          echo 'fileFormatVersion: 2' > Assets/Scenes/Main.unity
-
       - name: Build Unity Project
         uses: game-ci/unity-builder@v4
         env:
-          UNITY_LICENSE: ""
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
           unityVersion: 2022.3.20f1
